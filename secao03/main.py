@@ -1,4 +1,13 @@
-from fastapi import FastAPI, HTTPException, status, Response
+from typing import List, Optional
+
+from fastapi import FastAPI
+from fastapi import HTTPException
+from fastapi import status
+from fastapi import Response
+from fastapi import Path
+from fastapi import Query
+
+
 from models import Curso
 
 
@@ -25,7 +34,7 @@ async def get_cursos():
 
 
 @app.get('/cursos/{curso_id}')
-async def get_curso(curso_id: int):
+async def get_curso(curso_id: int = Path(default=None, title='Id do curso', description='Deve ser entre 1 e 2', gt=0, lt=3)):
     try:
         return cursos[curso_id]
     
@@ -66,6 +75,14 @@ async def delete_curso(curso_id:int):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=F'não existe id de curso {curso_id}')
 
 
+@app.get('/calculadora')
+async def get_calculadora(a:int = Query(default=None, gt=5), b:int = Query(default=None, lt=10), c:Optional[int] = Query(default=None, gt=100)):
+    soma = a + b
+
+    if c:
+        soma = soma + c
+    
+    return {'soma': soma}
 
 
 if __name__ ==  '__main__':
