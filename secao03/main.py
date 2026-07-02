@@ -1,8 +1,9 @@
-from fastapi import FastAPI, HTTPException, status
-
+from fastapi import FastAPI, HTTPException, status, Response
 from models import Curso
 
+
 app = FastAPI()
+
 
 cursos = {
     1: {
@@ -22,6 +23,7 @@ cursos = {
 async def get_cursos():
     return cursos
 
+
 @app.get('/cursos/{curso_id}')
 async def get_curso(curso_id: int):
     try:
@@ -29,6 +31,7 @@ async def get_curso(curso_id: int):
     
     except KeyError:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"error": "Curso não encontrado"})
+
 
 @app.post('/cursos', status_code=status.HTTP_201_CREATED)
 async def post_curso(curso: Curso):
@@ -40,6 +43,29 @@ async def post_curso(curso: Curso):
     
     else:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=f'Já existe um curso com id {curso.id}.')
+
+
+@app.put('/cursos/{curso_id}')
+async def put_curso(curso_id : int, curso: Curso):
+    if curso_id not in cursos:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f'Não existe curso id {curso_id}')
+    
+    cursos[curso_id] = curso
+    del curso.id
+
+    return curso
+
+
+@app.delete('/cursos/{curso_id}')
+async def delete_curso(curso_id:int):
+    try:
+        cursos.pop(curso_id)
+        return Response(status_code=status.HTTP_204_NO_CONTENT)
+    
+    except KeyError:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=F'não existe id de curso {curso_id}')
+
+
 
 
 if __name__ ==  '__main__':
