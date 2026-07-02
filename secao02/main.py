@@ -1,7 +1,9 @@
 from fastapi import FastAPI
 
+
 app = FastAPI()
 
-@app.get("/")
+
+@app.get('/')
 async def raiz():
-    return {"mensagem": "FastAPI funcionando!"}
+    return {'msg': 'FastAPI funcionando!'}
