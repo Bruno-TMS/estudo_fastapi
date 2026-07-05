@@ -1,5 +1,3 @@
-from typing import List, Optional
-
 from fastapi import FastAPI
 from fastapi import HTTPException
 from fastapi import status
@@ -76,7 +74,7 @@ async def delete_curso(curso_id:int):
 
 
 @app.get('/calculadora')
-async def get_calculadora(a:int = Query(default=None, gt=5), b:int = Query(default=None, lt=10), c:Optional[int] = Query(default=None, gt=100)):
+async def get_calculadora(a:int = Query(default=None, gt=5), b:int = Query(default=None, lt=10), c: int | None = Query(default=None, gt=100)):
     soma = a + b
 
     if c:
