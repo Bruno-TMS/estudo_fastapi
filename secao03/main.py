@@ -1,12 +1,25 @@
+from typing import Any
+
 from fastapi import FastAPI
 from fastapi import HTTPException
 from fastapi import status
 from fastapi import Response
 from fastapi import Path
 from fastapi import Query
+from fastapi import Depends
 
-
+from time import sleep
 from models import Curso
+
+
+def fake_db():
+    try:
+        print('Abrindo conexão com o Banco de Dados.')
+        sleep(2)
+    
+    finally:
+        print('Fechando conexão com o Banco de Dados')
+        sleep(2)
 
 
 app = FastAPI()
@@ -27,12 +40,12 @@ cursos = {
 
 
 @app.get('/cursos')
-async def get_cursos():
+async def get_cursos(db: Any = Depends(fake_db)):
     return cursos
 
 
 @app.get('/cursos/{curso_id}')
-async def get_curso(curso_id: int = Path(default=None, title='Id do curso', description='Deve ser entre 1 e 2', gt=0, lt=3)):
+async def get_curso(curso_id: int = Path(default=None, title='Id do curso', description='Deve ser entre 1 e 2', gt=0, lt=3), db: Any = Depends(fake_db)):
     try:
         return cursos[curso_id]
     
@@ -41,7 +54,7 @@ async def get_curso(curso_id: int = Path(default=None, title='Id do curso', desc
 
 
 @app.post('/cursos', status_code=status.HTTP_201_CREATED)
-async def post_curso(curso: Curso):
+async def post_curso(curso: Curso, db: Any = Depends(fake_db)):
     if curso.id not in cursos:
         next_id = len(cursos) + 1
         cursos[next_id] = curso
@@ -53,7 +66,7 @@ async def post_curso(curso: Curso):
 
 
 @app.put('/cursos/{curso_id}')
-async def put_curso(curso_id : int, curso: Curso):
+async def put_curso(curso_id : int, curso: Curso, db: Any = Depends(fake_db)):
     if curso_id not in cursos:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f'Não existe curso id {curso_id}')
     
@@ -64,7 +77,7 @@ async def put_curso(curso_id : int, curso: Curso):
 
 
 @app.delete('/cursos/{curso_id}')
-async def delete_curso(curso_id:int):
+async def delete_curso(curso_id:int, db: Any = Depends(fake_db)):
     try:
         cursos.pop(curso_id)
         return Response(status_code=status.HTTP_204_NO_CONTENT)
