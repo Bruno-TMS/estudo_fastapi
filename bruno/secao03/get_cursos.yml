@@ -1,15 +1,14 @@
 info:
-  name: GET curso
+  name: get_cursos
   type: http
-  seq: 5
 
 http:
-  method: get
-  url: http://127.0.0.1:8000/cursos/1
+  method: GET
+  url: http://127.0.0.1:8000/cursos
+  auth: inherit
 
 settings:
   encodeUrl: true
   timeout: 0
   followRedirects: true
   maxRedirects: 5
-​

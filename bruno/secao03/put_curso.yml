@@ -1,18 +1,18 @@
 info:
-  name: PUT curso
+  name: put_curso
   type: http
   seq: 4
 
 http:
   method: PUT
-  url: http://127.0.0.1:8000/cursos/1
+  url: http://127.0.0.1:8000/cursos/3
   body:
     type: json
     data: |-
       {
-        "titulo": "Programação em LUA EXTREME",
-        "aulas": 38,
-        "horas": 88
+        "titulo": "Programação para Python Avançado", 
+        "aulas": 87,
+         "horas": 56
       }
 
 settings:

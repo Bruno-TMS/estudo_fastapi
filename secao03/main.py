@@ -62,9 +62,9 @@ async def post_curso(curso: Curso, db: Any = Depends(fake_db)):
 @app.put('/cursos/{curso_id}')
 async def put_curso(curso_id : int, curso: Curso, db: Any = Depends(fake_db)):
     for curso_registrado in cursos:
-        if curso_id == curso_registrado.id:
+        if curso_registrado.id == curso_id:
+            curso_registrado.aulas = curso.aulas
             curso_registrado.titulo = curso.titulo
-            curso_registrado.aulas =  curso.aulas
             curso_registrado.horas = curso.horas
             
             return curso_registrado
@@ -75,10 +75,13 @@ async def put_curso(curso_id : int, curso: Curso, db: Any = Depends(fake_db)):
 @app.delete('/cursos/{curso_id}')
 async def delete_curso(curso_id:int, db: Any = Depends(fake_db)):
     try:
-        cursos.pop(curso_id)
-        return Response(status_code=status.HTTP_204_NO_CONTENT)
+        for curso_registrado in cursos:
+            if curso_registrado.id == curso_id:
+                cursos.remove(curso_registrado)
+                
+                return Response(status_code=status.HTTP_204_NO_CONTENT)
     
-    except KeyError:
+    except ValueError:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=F'não existe id de curso {curso_id}')
 
 
