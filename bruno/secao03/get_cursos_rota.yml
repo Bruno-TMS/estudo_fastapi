@@ -1,0 +1,14 @@
+info:
+  name: get_cursos_rota
+  type: http
+  seq: 7
+
+http:
+  method: get
+  url: http://127.0.0.1:8000/api/v1/cursos
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
