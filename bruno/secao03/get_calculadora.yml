@@ -1,0 +1,24 @@
+info:
+  name: get_calculadora
+  type: http
+  seq: 6
+
+http:
+  method: get
+  url: http://127.0.0.1:8000/calculadora?a=6&b=6&c=200
+  params:
+    - name: a
+      value: "6"
+      type: query
+    - name: b
+      value: "6"
+      type: query
+    - name: c
+      value: "200"
+      type: query
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

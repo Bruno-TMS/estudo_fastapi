@@ -1,0 +1,14 @@
+info:
+  name: get_curso
+  type: http
+  seq: 3
+
+http:
+  method: get
+  url: http://127.0.0.1:8000/cursos/3
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
